@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Http\Resources\WorkspaceMemberResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,6 +15,19 @@ class AdminWorkspaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'plan' => $this->plan,
+            'currency' => $this->currency,
+            'settings' => $this->settings,
+            'members_count' => $this->whenCounted('workspaceMembers'),
+            'members' => WorkspaceMemberResource::collection(
+                $this->whenLoaded('workspaceMembers')
+            ),
+            'created_at' => $this->created_at->toDateTimeString(),
+            'deleted_at' => $this->deleted_at?->toDateTimeString(),
+        ];
     }
 }

@@ -15,6 +15,13 @@ class UserWorkspaceSeeder extends Seeder
      */
     public function run(): void
     {
+        $superAdmin = User::create([
+            'name' => 'Super Admin',
+            'email' => 'managementadmin@gmail.com',
+            'password' => Hash::make('password'),
+            'is_super_admin' => true,
+        ]);
+
         $owner = User::create([
             'name' => 'Supriyono',
             'email' => 'supriyono@gmail.com',

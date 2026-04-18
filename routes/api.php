@@ -22,7 +22,7 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'super_admin'])->group(funct
     Route::get('/workspaces', [WorkspaceController::class, 'index']);
     Route::get('/workspaces/{id}', [WorkspaceController::class, 'show']);
     Route::patch('/workspaces/{id}/plan', [WorkspaceController::class, 'updatePlan']);
-    Route::get('/workspaces/{id}', [WorkspaceController::class, 'destroy']);
+    Route::delete('/workspaces/{id}', [WorkspaceController::class, 'destroy']);
 
     // Transactions
     Route::get('/transactions', [TransactionController::class, 'index']);

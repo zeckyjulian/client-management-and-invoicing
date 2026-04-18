@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Admin\TransactionController;
 use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\WorkspaceController as AdminWorkspaceController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
@@ -19,10 +20,10 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'super_admin'])->group(funct
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
     // Workspace
-    Route::get('/workspaces', [WorkspaceController::class, 'index']);
-    Route::get('/workspaces/{id}', [WorkspaceController::class, 'show']);
-    Route::patch('/workspaces/{id}/plan', [WorkspaceController::class, 'updatePlan']);
-    Route::delete('/workspaces/{id}', [WorkspaceController::class, 'destroy']);
+    Route::get('/workspaces', [AdminWorkspaceController::class, 'index']);
+    Route::get('/workspaces/{id}', [AdminWorkspaceController::class, 'show']);
+    Route::patch('/workspaces/{id}/plan', [AdminWorkspaceController::class, 'updatePlan']);
+    Route::delete('/workspaces/{id}', [AdminWorkspaceController::class, 'destroy']);
 
     // Transactions
     Route::get('/transactions', [TransactionController::class, 'index']);

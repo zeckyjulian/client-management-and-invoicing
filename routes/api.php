@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\TransactionController;
-use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\WorkspaceController as AdminWorkspaceController;
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->middleware(['auth:sanctum', 'super_admin'])->group(function () {
 
     // Users
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::patch('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    Route::get('/users', [AdminUserController::class, 'index']);
+    Route::get('/users/{id}', [AdminUserController::class, 'show']);
+    Route::patch('/users/{id}', [AdminUserController::class, 'update']);
+    Route::delete('/users/{id}', [AdminUserController::class, 'destroy']);
 
     // Workspace
     Route::get('/workspaces', [AdminWorkspaceController::class, 'index']);
@@ -39,6 +39,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', LogoutController::class);
         Route::get('/workspaces', [WorkspaceController::class, 'index']);
+        Route::post('/workspaces', [WorkspaceController::class, 'store']);
 
         Route::middleware('workspace')->group(function () {
             Route::get('/workspace', [WorkspaceController::class, 'show']);

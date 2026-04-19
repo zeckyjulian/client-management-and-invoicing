@@ -5,10 +5,34 @@ namespace App\Services;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceMember;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class WorkspaceService
 {
+    public function create(User $user, array $data): Workspace
+    {
+        $workspace = DB::transaction(function () use ($user, $data) {
+            $workspace = Workspace::create([
+                'name' => $data['name'],
+                'slug' => Str::slug($data['name']) . '-' . Str::random(5),
+                'plan' => 'free',
+                'currency' => $data['currency'] ?? 'IDR',
+            ]);
+
+            $workspace->workspaceMembers()->create([
+                'user_id' => $user->id,
+                'role' => 'owner',
+                'joined_at' => now(),
+            ]);
+
+            return $workspace;
+        });
+
+        return $workspace;
+    }
+
     public function update(Workspace $workspace, array $data): Workspace
     {
         if (isset($data['settings'])) {

@@ -21,6 +21,21 @@ class WorkspaceController extends Controller
         ]);
     }
 
+    public function store(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'currency' => 'sometimes|string|size:3',
+        ]);
+
+        $workspace = $this->service->create($request->user(), $data);
+
+        return response()->json([
+            'message' => 'Workspace created successfully.',
+            'data' => new WorkspaceResource($workspace),
+        ], 201);
+    }
+
     public function show(): JsonResponse
     {
         $workspace = app('current.workspace')->load('workspaceMembers.user');

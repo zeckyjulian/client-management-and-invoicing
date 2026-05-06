@@ -22,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'super_admin' => CheckSuperAdmin::class,
         ]);
     })
+    ->withProviders([
+        App\Providers\EventServiceProvider::class,
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*')

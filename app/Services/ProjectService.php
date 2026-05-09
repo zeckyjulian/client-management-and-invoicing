@@ -14,4 +14,16 @@ class ProjectService
             'workspace_id' => $workspace->id,
         ]);
     }
+
+    public function update(Project $project, array $data): Project
+    {
+        $project->update($data);
+
+        return $project->fresh();
+    }
+
+    public function delete(Project $project): void
+    {
+        $project->delete();
+    }
 }

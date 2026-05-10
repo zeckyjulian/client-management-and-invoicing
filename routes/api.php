@@ -6,6 +6,10 @@ use App\Http\Controllers\Api\Admin\WorkspaceController as AdminWorkspaceControll
 use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\ProjectController;
+use App\Http\Controllers\Api\V1\TaskController;
+use App\Http\Controllers\Api\V1\TimeEntryController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
 use App\Http\Controllers\Api\V1\WorkspaceMemberController;
 use Illuminate\Http\Request;
@@ -51,6 +55,24 @@ Route::prefix('v1')->group(function () {
                 Route::patch('/{userId}/role', [WorkspaceMemberController::class, 'updateRole'])->middleware('workspace.role:owner');
                 Route::delete('/{userId}', [WorkspaceMemberController::class, 'remove'])->middleware('workspace.role:owner');
             });
+
+            // Clients
+            Route::apiResource('clients', ClientController::class);
+
+            // Projects
+            Route::apiResource('projects', ProjectController::class);
+
+            // Tasks (nested under projects)
+            Route::apiResource('projects/{projectId}/tasks', TaskController::class)->except(['index']);
+            Route::get('projects/{projectId}/tasks', [TaskController::class, 'index']);
+
+            // Time Entries
+            Route::get('time-entries/running', [TimeEntryController::class, 'running']);
+            Route::post('projects/{projectId}/time-entries/start', [TimeEntryController::class, 'start']);
+            Route::patch('time-entries/{entryId}/stop', [TimeEntryController::class, 'stop']);
+            Route::post('projects/{projectId}/time-entries/manual', [TimeEntryController::class, 'storeManual']);
+            Route::get('projects/{projectId}/time-entries', [TimeEntryController::class, 'index']);
+            Route::delete('time-entries/{entryId}', [TimeEntryController::class, 'destroy']);
         });
     });
 });

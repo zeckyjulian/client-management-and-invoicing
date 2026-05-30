@@ -16,7 +16,7 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
             'priority' => $this->priority,
@@ -29,10 +29,13 @@ class TaskResource extends JsonResource
             'estimated_minutes' => $this->estimated_minutes,
             'total_tracked' => gmdate('H:i:s', $this->total_tracked_seconds),
             'due_date' => $this->due_date?->toDateString(),
-            'assigned_to' => $this->when($this->relationLoaded('assignedTo'), [
-                'id' => $this->assignedTo?->id,
-                'name' => $this->assignedTo?->name,
-            ]),
+            'assigned_to' => $this->when(
+                $this->relationLoaded('assignedTo') && $this->assignedTo,
+                fn () => [
+                    'id'   => $this->assignedTo->id,
+                    'name' => $this->assignedTo->name,
+                ]
+            ),
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

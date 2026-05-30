@@ -32,7 +32,7 @@ class TimeEntryResource extends JsonResource
             'task' => $this->when($this->relationLoaded('task') && $this->task,
                 fn () => [
                     'id' => $this->task->id,
-                    'name' => $this->task->name,
+                    'title' => $this->task->title,
                 ]
             ),
             'user' => $this->when($this->relationLoaded('user'), [

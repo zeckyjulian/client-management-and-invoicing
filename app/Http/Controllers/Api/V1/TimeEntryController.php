@@ -35,7 +35,7 @@ class TimeEntryController extends Controller
 
         $data = $request->validate([
             'task_id' => 'nullable|uuid|exists:tasks,id',
-            'description' => 'nullable|string',
+            'description' => 'required_without:task_id|nullable|string|max:255',
             'billable' => 'sometimes|boolean',
             'hourly_rate' => 'nullable|numeric|min:0',
         ]);
@@ -68,7 +68,7 @@ class TimeEntryController extends Controller
 
         $data = $request->validate([
             'task_id' => 'nullable|uuid|exists:tasks,id',
-            'description' => 'nullable|string',
+            'description' => 'required_without:task_id|nullable|string|max:255',
             'billable' => 'sometimes|boolean',
             'hourly_rate' => 'nullable|numeric|min:0',
             'started_at' => 'required|date',

@@ -44,7 +44,7 @@ class TimeTrackingService
         }
 
         $endedAt = now();
-        $durationSeconds = $endedAt->diffInSeconds($timeEntry->started_at);
+        $durationSeconds = intval(abs($endedAt->diffInSeconds($timeEntry->started_at)));
 
         $timeEntry->update([
             'ended_at' => $endedAt,
@@ -69,7 +69,7 @@ class TimeTrackingService
             ]);
         }
 
-        $durationSeconds = $endedAt->diffInSeconds($startedAt);
+        $durationSeconds = intval(abs($endedAt->diffInSeconds($startedAt)));
 
         $entry = TimeEntry::create([
             'workspace_id' => $project->workspace_id,
@@ -92,6 +92,9 @@ class TimeTrackingService
     // get the user's running timer
     public function getRunningTimer(User $user): ?TimeEntry
     {
-        return TimeEntry::where('user_id', $user->id)->whereNull('ended_at')->with('project', 'task')->first();
+        return TimeEntry::where('user_id', $user->id)
+                        ->whereNull('ended_at')
+                        ->with('project', 'task', 'user')
+                        ->first();
     }
 }

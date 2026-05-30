@@ -22,6 +22,10 @@ class Client extends Model
         'portal_active' => 'boolean',
     ];
 
+    protected $attributes = [
+        'portal_active' => false,
+    ];
+
     protected $hidden = [
         'portal_token',
     ];

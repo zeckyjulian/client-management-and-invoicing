@@ -13,7 +13,7 @@ class Expense extends Model
 
     protected $fillable = [
         'workspace_id', 'project_id', 'user_id', 'category', 'description',
-        'amount', 'billable', 'receipt_url', 'expense_date',
+        'amount', 'billable', 'receipt_url', 'expense_date', 'invoice_id',
     ];
 
     protected $casts = [

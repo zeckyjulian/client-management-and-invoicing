@@ -30,10 +30,13 @@ class InvoiceResource extends JsonResource
             'paid_at' => $this->paid_at?->toDateTimeString(),
             'is_editable' => $this->isEditable(),
             'client' => new ClientResource($this->whenLoaded('client')),
-            'project' => $this->when($this->relationLoaded('project') && $this->project, [
-                'id' => $this->project->id,
-                'name' => $this->project->name
-            ]),
+            'project' => $this->when(
+                $this->relationLoaded('project') && $this->project,
+                fn () => [
+                    'id' => $this->project->id,
+                    'name' => $this->project->name
+                ]
+            ),
             'items' => InvoiceItemResource::collection($this->whenLoaded('items')),
             'created_at' => $this->created_at->toDateTimeString(),
         ];

@@ -29,7 +29,7 @@ class SentPaymentRemindersCommand extends Command
     {
         $count = 0;
 
-        Invoice::query()
+        Invoice::withoutGlobalScopes()
             ->where('status', 'overdue')
             ->chunkById(100, function ($invoices) use (&$count) {
                 $invoices->each(function (Invoice $invoice) use (&$count) {

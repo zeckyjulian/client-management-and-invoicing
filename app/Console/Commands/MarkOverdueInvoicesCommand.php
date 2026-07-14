@@ -29,7 +29,7 @@ class MarkOverdueInvoicesCommand extends Command
     {
         $count = 0;
 
-        Invoice::query()
+        Invoice::withoutGlobalScopes()
             ->where('status', 'sent')
             ->whereDate('due_date', '<', today())
             ->chunkById(100, function ($invoices) use (&$count) {

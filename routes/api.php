@@ -93,7 +93,7 @@ Route::prefix('v1')->group(function () {
             Route::delete('invoices/{id}', [InvoiceController::class, 'destroy']);
 
             // Invoice Items
-            Route::apiResource('invoices/{invoiceId}/items', [InvoiceItemController::class, 'store']);
+            Route::post('invoices/{invoiceId}/items', [InvoiceItemController::class, 'store']);
             Route::patch('invoices/{invoiceId}/items/{itemId}', [InvoiceItemController::class, 'update']);
             Route::delete('invoices/{invoiceId}/items/{itemId}', [InvoiceItemController::class, 'destroy']);
 

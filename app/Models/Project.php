@@ -40,6 +40,11 @@ class Project extends Model
         return $this->hasMany(TimeEntry::class);
     }
 
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(Expense::class);
+    }
+
     public function getTotalTrackedSecondsAttribute(): int
     {
         return $this->timeEntries()->sum('duration_seconds');

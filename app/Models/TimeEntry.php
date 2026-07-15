@@ -13,7 +13,7 @@ class TimeEntry extends Model
 
     protected $fillable = [
         'workspace_id', 'project_id', 'task_id', 'user_id', 'description',
-        'started_at', 'ended_at', 'duration_seconds', 'billable', 'hourly_rate',
+        'started_at', 'ended_at', 'duration_seconds', 'billable', 'hourly_rate', 'invoice_id',
     ];
 
     protected $casts = [

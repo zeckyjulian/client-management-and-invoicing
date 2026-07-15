@@ -7,7 +7,11 @@ use App\Http\Controllers\Api\V1\Auth\LoginController;
 use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\RegisterController;
 use App\Http\Controllers\Api\V1\ClientController;
+use App\Http\Controllers\Api\V1\ExpenseController;
+use App\Http\Controllers\Api\V1\InvoiceController;
+use App\Http\Controllers\Api\V1\InvoiceItemController;
 use App\Http\Controllers\Api\V1\ProjectController;
+use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\TaskController;
 use App\Http\Controllers\Api\V1\TimeEntryController;
 use App\Http\Controllers\Api\V1\WorkspaceController;
@@ -73,6 +77,29 @@ Route::prefix('v1')->group(function () {
             Route::post('projects/{projectId}/time-entries/manual', [TimeEntryController::class, 'storeManual']);
             Route::get('projects/{projectId}/time-entries', [TimeEntryController::class, 'index']);
             Route::delete('time-entries/{entryId}', [TimeEntryController::class, 'destroy']);
+
+            // Expenses
+            Route::apiResource('expenses', ExpenseController::class)->except(['show']);
+
+            // Invoices
+            Route::get('invoices', [InvoiceController::class, 'index']);
+            Route::post('invoices', [InvoiceController::class, 'store']);
+            Route::post('invoices/generate/{projectId}', [InvoiceController::class, 'generateFromProject']);
+            Route::get('invoices/{id}', [InvoiceController::class, 'show']);
+            Route::patch('invoices/{id}', [InvoiceController::class, 'update']);
+            Route::post('invoices/{id}/send', [InvoiceController::class, 'send']);
+            Route::post('invoices/{id}/mark-as-paid', [InvoiceController::class, 'markAsPaid']);
+            Route::post('invoices/{id}/cancel', [InvoiceController::class, 'cancel']);
+            Route::delete('invoices/{id}', [InvoiceController::class, 'destroy']);
+
+            // Invoice Items
+            Route::post('invoices/{invoiceId}/items', [InvoiceItemController::class, 'store']);
+            Route::patch('invoices/{invoiceId}/items/{itemId}', [InvoiceItemController::class, 'update']);
+            Route::delete('invoices/{invoiceId}/items/{itemId}', [InvoiceItemController::class, 'destroy']);
+
+            // Reports
+            Route::get('reports/financial', [ReportController::class, 'financial']);
+            Route::get('reports/time', [ReportController::class, 'time']);
         });
     });
 });
